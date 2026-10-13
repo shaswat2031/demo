@@ -134,23 +134,23 @@ export async function POST(request) {
 1. Concrete Cracks in Spillway Section
 • Several hairline to moderate cracks (0.2–1.5 mm) observed in the spillway chute and energy dissipation area.
 • Likely due to temperature variation and hydraulic pressure.
-• Recommended Action: Seal cracks with epoxy grouting and monitor through periodic inspection.
+• **Recommended Action:** Seal cracks with epoxy grouting and monitor through periodic inspection.
 
 2. Seepage in Right Bank Foundation
 • Increased seepage observed at drainage gallery (RD 12+400 to 12+600).
 • Water pressure slightly higher than previous year.
-• Recommended Action: Enhance drainage, install additional piezometers, and conduct detailed grouting assessment.
+• **Recommended Action:** Enhance drainage, install additional piezometers, and conduct detailed grouting assessment.
 
 3. Deterioration of Gate Hoist Mechanism
 • Wear and corrosion found in hoist components of Gates 3 and 5.
 • Irregular operation and higher vibration levels recorded.
-• Recommended Action: Immediate maintenance and replacement of worn components.`;
+• **Recommended Action:** Immediate maintenance and replacement of worn components.`;
       } else {
         responseText = `Based on the Bhakra Dam project documents (Inspection Report 2025, Spillway Inspection.docx, Gate Maintenance Log 2024):
 
 The documentation specifies continuous telemetry monitoring for foundation seepage (RD 12+400), spillway concrete integrity (blocks 14–18), and radial gate hoist mechanisms. All operations comply with BBMB safety guidelines and National Dam Safety Act standards.
 
-• Recommended Action: Refer to referenced engineering logs for specific chainage or component parameters.`;
+• **Recommended Action:** Refer to referenced engineering logs for specific chainage or component parameters.`;
       }
     }
 

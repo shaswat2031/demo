@@ -5,9 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import DsmartLogo from "@/components/DsmartLogo";
 import PartnerLogos from "@/components/PartnerLogos";
+import FormattedMessage from "@/components/FormattedMessage";
 
 export default function DashboardPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [mobileContextView, setMobileContextView] = useState("chat");
   // Default to "Smart Query" as requested to match the user's view
   const [activeTab, setActiveTab] = useState("Smart Query");
   const [searchQuery, setSearchQuery] = useState("");
@@ -354,47 +357,76 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex flex-row overflow-x-hidden font-sans">
       {/* ================= LEFT SIDEBAR ================= */}
+      {/* Mobile Drawer Backdrop */}
+      {mobileSidebarOpen && (
+        <div
+          onClick={() => setMobileSidebarOpen(false)}
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-xs transition-opacity animate-fadeIn"
+        />
+      )}
+
+      {/* ================= LEFT SIDEBAR (Off-canvas Drawer on Mobile, Fixed Column on Desktop) ================= */}
       <aside
-        className={`${
-          sidebarCollapsed ? "w-20" : "w-64"
-        } min-h-screen bg-[#071328] text-white flex flex-col justify-between transition-all duration-300 ease-in-out shrink-0 z-30 relative select-none`}
+        className={`
+          ${mobileSidebarOpen ? "fixed inset-y-0 left-0 z-50 w-72 shadow-2xl flex" : "hidden lg:flex"}
+          ${sidebarCollapsed ? "lg:w-20" : "lg:w-64"}
+          min-h-screen bg-[#071328] text-white flex-col justify-between transition-all duration-300 ease-in-out shrink-0 select-none
+        `}
       >
         <div>
-          {/* Logo Header & Collapse Toggle */}
-          <div className="p-5 flex items-center justify-between border-b border-slate-800/60">
-            {!sidebarCollapsed ? (
-              <DsmartLogo variant="full" theme="dark" />
-            ) : (
-              <DsmartLogo variant="icon-only" theme="dark" />
-            )}
+          {/* Logo Header, Mobile Close & Collapse Toggle */}
+          <div className="p-4 sm:p-5 flex items-center justify-between border-b border-slate-800/60">
+            <div className="flex items-center gap-2">
+              {!sidebarCollapsed ? (
+                <DsmartLogo variant="full" theme="dark" />
+              ) : (
+                <DsmartLogo variant="icon-only" theme="dark" />
+              )}
+            </div>
 
-            <button
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="w-7 h-7 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-              title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-            >
-              <svg
-                className={`w-4 h-4 transition-transform duration-200 ${
-                  sidebarCollapsed ? "rotate-180" : ""
-                }`}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            <div className="flex items-center gap-1">
+              {/* Desktop Collapse Toggle */}
+              <button
+                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                className="hidden lg:flex w-7 h-7 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white items-center justify-center transition-colors cursor-pointer"
+                title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
               >
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-            </button>
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    sidebarCollapsed ? "rotate-180" : ""
+                  }`}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+
+              {/* Mobile Close Drawer Button */}
+              <button
+                onClick={() => setMobileSidebarOpen(false)}
+                className="lg:hidden p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer"
+                title="Close Navigation Drawer"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* New Query Primary CTA */}
-          <div className="p-4">
+          <div className="p-3.5 sm:p-4">
             <button
               onClick={() => {
                 setActiveTab("Smart Query");
                 setSearchQuery("");
+                setMobileSidebarOpen(false);
+                setMobileContextView("chat");
               }}
               className="w-full bg-[#0d6efd] hover:bg-[#0b5ed7] text-white font-medium text-sm py-2.5 px-3 rounded-xl shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
@@ -402,7 +434,7 @@ export default function DashboardPage() {
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
-              {!sidebarCollapsed && <span>New Query</span>}
+              {(!sidebarCollapsed || mobileSidebarOpen) && <span>New Query</span>}
             </button>
           </div>
 
@@ -413,7 +445,10 @@ export default function DashboardPage() {
               return (
                 <button
                   key={item.name}
-                  onClick={() => setActiveTab(item.name)}
+                  onClick={() => {
+                    setActiveTab(item.name);
+                    setMobileSidebarOpen(false);
+                  }}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
                     isActive
                       ? "bg-blue-600/30 text-white font-semibold shadow-xs"
@@ -424,7 +459,7 @@ export default function DashboardPage() {
                   <span className={isActive ? "text-cyan-400" : "text-slate-400"}>
                     {item.icon}
                   </span>
-                  {!sidebarCollapsed && <span>{item.name}</span>}
+                  {(!sidebarCollapsed || mobileSidebarOpen) && <span>{item.name}</span>}
                 </button>
               );
             })}
@@ -442,7 +477,7 @@ export default function DashboardPage() {
               <polyline points="16 17 21 12 16 7" />
               <line x1="21" y1="12" x2="9" y2="12" />
             </svg>
-            {!sidebarCollapsed && <span>Back to Login</span>}
+            {(!sidebarCollapsed || mobileSidebarOpen) && <span>Back to Login</span>}
           </Link>
         </div>
       </aside>
@@ -450,74 +485,91 @@ export default function DashboardPage() {
       {/* ================= MAIN CONTAINER ================= */}
       <div className="flex-1 flex flex-col min-w-0 min-h-screen">
         {/* ================= TOP HEADER BAR ================= */}
-        <header className="h-20 bg-white border-b border-slate-200/80 px-6 sm:px-8 flex items-center justify-between sticky top-0 z-20">
-          {/* Left: Project / Group Selector Dropdown */}
-          <div className="relative">
+        <header className="h-16 sm:h-20 bg-white border-b border-slate-200/80 px-3.5 sm:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-20">
+          {/* Left: Mobile Menu Toggle + Project / Group Selector */}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            {/* Mobile Hamburger Toggle Button */}
             <button
-              onClick={() => setGroupDropdownOpen(!groupDropdownOpen)}
-              className="flex items-center gap-3 hover:bg-slate-50 p-1.5 -ml-1.5 rounded-xl transition cursor-pointer"
+              type="button"
+              onClick={() => setMobileSidebarOpen(true)}
+              className="p-1.5 -ml-1 text-slate-700 hover:text-blue-600 hover:bg-slate-100 rounded-xl lg:hidden cursor-pointer shrink-0"
+              title="Open Navigation Menu"
             >
-              {/* Dam Thumbnail */}
-              <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-slate-200 shadow-2xs shrink-0">
-                <Image
-                  src="/dam-panoramic.jpg"
-                  alt="Bhakra Dam Thumbnail"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-
-              {/* Group Title and Info */}
-              <div className="text-left">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-bold text-slate-900 tracking-tight">
-                    Bhakra Dam — Inspection
-                  </span>
-                  <svg className="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
-                </div>
-                <span className="text-[11px] text-slate-500 font-medium block">
-                  5 members • 128 documents
-                </span>
-              </div>
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
             </button>
 
-            {/* Dropdown Menu */}
-            {groupDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-40">
-                <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                  Select Project Group
+            <div className="relative min-w-0">
+              <button
+                type="button"
+                onClick={() => setGroupDropdownOpen(!groupDropdownOpen)}
+                className="flex items-center gap-2 sm:gap-3 hover:bg-slate-50 p-1 sm:p-1.5 rounded-xl transition cursor-pointer text-left min-w-0"
+              >
+                {/* Dam Thumbnail */}
+                <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden border border-slate-200 shadow-2xs shrink-0">
+                  <Image
+                    src="/dam-panoramic.jpg"
+                    alt="Bhakra Dam Thumbnail"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-                <button
-                  onClick={() => setGroupDropdownOpen(false)}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-blue-600 flex items-center justify-between"
-                >
-                  <span>Bhakra Dam — Inspection</span>
-                  <span className="text-[10px] bg-blue-600 text-white px-1.5 py-0.5 rounded">Active</span>
-                </button>
-                <button
-                  onClick={() => setGroupDropdownOpen(false)}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 mt-1"
-                >
-                  Beas Spillway Structural Review
-                </button>
-                <button
-                  onClick={() => setGroupDropdownOpen(false)}
-                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50"
-                >
-                  Turbine Unit 4 Vibration Telemetry
-                </button>
-              </div>
-            )}
+
+                {/* Group Title and Info */}
+                <div className="text-left min-w-0">
+                  <div className="flex items-center gap-1 sm:gap-1.5">
+                    <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight truncate max-w-[130px] sm:max-w-none">
+                      Bhakra Dam — Inspection
+                    </span>
+                    <svg className="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </div>
+                  <span className="text-[10px] sm:text-[11px] text-slate-500 font-medium block truncate max-w-[130px] sm:max-w-none">
+                    5 members • 128 docs
+                  </span>
+                </div>
+              </button>
+
+              {/* Dropdown Menu */}
+              {groupDropdownOpen && (
+                <div className="absolute left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-40">
+                  <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                    Select Project Group
+                  </div>
+                  <button
+                    onClick={() => setGroupDropdownOpen(false)}
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-blue-600 flex items-center justify-between"
+                  >
+                    <span>Bhakra Dam — Inspection</span>
+                    <span className="text-[10px] bg-blue-600 text-white px-1.5 py-0.5 rounded">Active</span>
+                  </button>
+                  <button
+                    onClick={() => setGroupDropdownOpen(false)}
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 mt-1"
+                  >
+                    Beas Spillway Structural Review
+                  </button>
+                  <button
+                    onClick={() => setGroupDropdownOpen(false)}
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50"
+                  >
+                    Turbine Unit 4 Vibration Telemetry
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Right Header: BBMB Logo + ICED Logo + User Avatar */}
-          <div className="flex items-center gap-4 sm:gap-6">
+          {/* Right Header: Partner Logos + User Avatar Circle "YR" */}
+          <div className="flex items-center gap-2.5 sm:gap-4 lg:gap-6 shrink-0">
             <PartnerLogos />
 
             {/* User Avatar Circle "YR" */}
-            <div className="w-10 h-10 rounded-full bg-[#0a2558] text-white flex items-center justify-center font-bold text-sm shadow-md ring-2 ring-blue-100 shrink-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#0a2558] text-white flex items-center justify-center font-bold text-xs sm:text-sm shadow-md ring-2 ring-blue-100 shrink-0">
               YR
             </div>
           </div>
@@ -527,8 +579,38 @@ export default function DashboardPage() {
         {activeTab === "Smart Query" ? (
           /* ================= 1. SMART QUERY / AI DOCUMENT CHAT VIEW (EXACT SCREENSHOT) ================= */
           <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            {/* Mobile View Toggle between Chat & Context (Only on < lg) */}
+            <div className="lg:hidden px-3.5 py-2 bg-white border-b border-slate-200/80 flex items-center justify-center shrink-0">
+              <div className="bg-slate-100 p-1 rounded-xl flex items-center gap-1 w-full max-w-sm shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => setMobileContextView("chat")}
+                  className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                    mobileContextView === "chat"
+                      ? "bg-white text-blue-600 shadow-xs"
+                      : "text-slate-500 hover:text-slate-800"
+                  }`}
+                >
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  <span>Query Feed</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMobileContextView("context")}
+                  className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                    mobileContextView === "context"
+                      ? "bg-white text-blue-600 shadow-xs"
+                      : "text-slate-500 hover:text-slate-800"
+                  }`}
+                >
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  <span>Project Context</span>
+                </button>
+              </div>
+            </div>
+
             {/* Left/Center Chat Feed Column */}
-            <div className="flex-1 flex flex-col justify-between p-6 sm:p-8 overflow-y-auto">
+            <div className={`flex-1 flex flex-col justify-between p-3.5 sm:p-6 lg:p-8 overflow-y-auto ${mobileContextView === "context" ? "hidden lg:flex" : "flex"}`}>
               <div className="max-w-4xl w-full mx-auto space-y-6">
                 {/* Dynamically Rendered Conversation Feed */}
                 {messages.map((msg) => {
@@ -540,7 +622,7 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex-1">
                           <div className="bg-[#f0f4f9] rounded-2xl rounded-tl-sm px-5 py-3.5 text-sm font-normal text-slate-800 leading-relaxed shadow-2xs">
-                            {msg.text}
+                            <FormattedMessage text={msg.text} />
                           </div>
                           <div className="text-[11px] text-slate-400 text-right mt-1.5 pr-2">
                             {msg.time}
@@ -591,8 +673,8 @@ export default function DashboardPage() {
                           </div>
 
                           {/* Response Text / Formatted findings */}
-                          <div className="text-sm text-slate-800 font-normal leading-relaxed whitespace-pre-line">
-                            {msg.text}
+                          <div className="text-sm text-slate-800 font-normal leading-relaxed">
+                            <FormattedMessage text={msg.text} />
                           </div>
                         </div>
                       </div>
@@ -646,11 +728,11 @@ export default function DashboardPage() {
               </div>
 
               {/* Bottom Floating Query Bar */}
-              <div className="max-w-4xl w-full mx-auto pt-6">
+              <div className="max-w-4xl w-full mx-auto pt-2 sm:pt-6 sticky bottom-0 bg-[#f8fafc]/95 backdrop-blur-md pb-2 sm:pb-0 z-10">
                 <form onSubmit={handleQuerySubmit} className="relative flex items-center">
-                  <div className="w-full flex items-center bg-white rounded-2xl border border-slate-200/90 shadow-lg shadow-slate-200/50 px-4 py-2.5 focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
+                  <div className="w-full flex items-center bg-white rounded-2xl border border-slate-200/90 shadow-lg shadow-slate-200/50 px-3 sm:px-4 py-2 sm:py-2.5 focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
                     {/* @ Mention badge */}
-                    <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-sm font-bold mr-3 shrink-0">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-xs sm:text-sm font-bold mr-2 sm:mr-3 shrink-0">
                       @
                     </div>
 
@@ -696,7 +778,7 @@ export default function DashboardPage() {
             </div>
 
             {/* ================= RIGHT CONTEXT PANEL ================= */}
-            <aside className="w-full lg:w-[320px] xl:w-[360px] bg-white border-l border-slate-200/80 p-5 space-y-5 overflow-y-auto shrink-0">
+            <aside className={`w-full lg:w-[320px] xl:w-[360px] bg-white border-l border-slate-200/80 p-4 sm:p-5 space-y-4 sm:space-y-5 overflow-y-auto shrink-0 ${mobileContextView === "chat" ? "hidden lg:block" : "block"}`}>
               {/* Card 1: Group Context */}
               <div className="bg-[#f8fafc] rounded-2xl border border-slate-200/80 p-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-200/60">

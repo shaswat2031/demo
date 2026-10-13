@@ -2,12 +2,12 @@ import Image from "next/image";
 
 export default function PartnerLogos({ className = "" }) {
   return (
-    <div className={`flex items-center gap-3 sm:gap-5 ${className}`}>
+    <div className={`flex items-center gap-2 sm:gap-5 ${className}`}>
       {/* 1. Bhakra Beas Management Board Logo */}
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-2">
         {/* BBMB Crest / Emblem */}
-        <div className="flex flex-col items-center">
-          <svg className="w-8 h-8 sm:w-9 sm:h-9" viewBox="0 0 48 48" fill="none">
+        <div className="flex flex-col items-center shrink-0">
+          <svg className="w-6 h-6 sm:w-8 sm:h-8" viewBox="0 0 48 48" fill="none">
             {/* Red stylized dam curve */}
             <path
               d="M10 8 V32 C10 39 16 44 24 44 C32 44 38 39 38 32 C38 25 32 20 24 20"
@@ -34,16 +34,13 @@ export default function PartnerLogos({ className = "" }) {
             <circle cx="34" cy="28" r="2" fill="#FBC02D" />
             <circle cx="34" cy="32" r="2" fill="#0288D1" />
           </svg>
-          <span className="text-[6.5px] sm:text-[7px] font-bold text-[#D32F2F] tracking-tighter uppercase leading-none mt-0.5">
-            BHAKRA BEAS
-          </span>
-          <span className="text-[5.5px] sm:text-[6px] font-semibold text-[#D32F2F] tracking-tighter uppercase leading-none">
-            NATION&apos;S PRIDE
+          <span className="text-[5.5px] sm:text-[6.5px] font-bold text-[#D32F2F] tracking-tighter uppercase leading-none mt-0.5">
+            BBMB
           </span>
         </div>
 
-        {/* BBMB Text */}
-        <div className="flex flex-col justify-center">
+        {/* BBMB Text (Visible on md and up) */}
+        <div className="hidden md:flex flex-col justify-center">
           <span className="text-xs sm:text-[13px] font-black text-[#D32F2F] tracking-tight uppercase leading-tight">
             BHAKRA BEAS MANAGEMENT BOARD
           </span>
@@ -54,16 +51,16 @@ export default function PartnerLogos({ className = "" }) {
       </div>
 
       {/* Vertical Subtle Divider */}
-      <div className="h-8 w-[1.5px] bg-sky-200/80 hidden sm:block" />
+      <div className="h-7 w-[1px] bg-slate-200 hidden md:block" />
 
-      {/* 2. Official ICED Logo Image */}
-      <div className="relative flex items-center shrink-0">
+      {/* 2. Official ICED Logo Image (Visible on sm and up) */}
+      <div className="relative hidden sm:flex items-center shrink-0">
         <Image
           src="/iced-logo.png"
           alt="ICED - International Centre of Excellence for Dams"
           width={185}
           height={52}
-          className="h-8 sm:h-9 w-auto object-contain"
+          className="h-7 sm:h-8 md:h-9 w-auto object-contain"
           priority
         />
       </div>

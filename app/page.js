@@ -68,11 +68,6 @@ export default function LoginPage() {
     },
   ];
 
-  const handleRoleSelect = (role) => {
-    setSelectedRole(role.id);
-    setEmail(role.email);
-    setPassword("Smart@Pass2026");
-  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -94,7 +89,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#081225] overflow-x-hidden font-sans">
       {/* ================= LEFT SECTION (Hero / Infrastructure Visual) ================= */}
-      <div className="relative w-full lg:w-[58%] min-h-[520px] lg:min-h-screen flex flex-col justify-between p-6 sm:p-10 lg:p-14 overflow-hidden select-none">
+      <div className="relative w-full lg:w-[58%] min-h-[340px] sm:min-h-[460px] lg:min-h-screen flex flex-col justify-between p-5 sm:p-10 lg:p-14 overflow-hidden select-none">
         {/* Background Dam Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -115,19 +110,39 @@ export default function LoginPage() {
         {/* Content Container (Layered above background) */}
         <div className="relative z-10 flex flex-col justify-between h-full">
           {/* Top Title: Your Documents Smarter */}
-          <div className="pt-2 sm:pt-4">
-            <span className="text-xl sm:text-2xl lg:text-3xl font-light text-cyan-100/90 tracking-tight block">
+          <div className="pt-1 sm:pt-4">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-[10px] sm:text-xs font-semibold mb-2 sm:mb-3 backdrop-blur-md">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-400 animate-pulse" />
+              <span>Smart Hydro & Infrastructure Digital Twin</span>
+            </div>
+            <span className="text-lg sm:text-2xl lg:text-3xl font-light text-cyan-100/90 tracking-tight block">
               Your
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none mt-1 drop-shadow-md">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none mt-0.5 sm:mt-1 drop-shadow-md">
               Documents
             </h1>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none mt-1 drop-shadow-md">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none mt-0.5 sm:mt-1 drop-shadow-md">
               Smarter
             </h1>
+
+            {/* Mobile Format Badges Row (Visible on Mobile only) */}
+            <div className="flex md:hidden items-center gap-1.5 sm:gap-2 mt-3 overflow-x-auto pb-1">
+              <div className="glass-panel px-2.5 py-1 rounded-lg flex items-center gap-1.5 shrink-0">
+                <span className="w-4 h-4 rounded bg-red-500 text-white flex items-center justify-center font-bold text-[8px]">P</span>
+                <span className="text-[10.5px] text-cyan-100 font-medium">PDF Reports</span>
+              </div>
+              <div className="glass-panel px-2.5 py-1 rounded-lg flex items-center gap-1.5 shrink-0">
+                <span className="w-4 h-4 rounded bg-blue-600 text-white flex items-center justify-center font-bold text-[8px]">W</span>
+                <span className="text-[10.5px] text-cyan-100 font-medium">Drawings</span>
+              </div>
+              <div className="glass-panel px-2.5 py-1 rounded-lg flex items-center gap-1.5 shrink-0">
+                <span className="w-4 h-4 rounded bg-emerald-600 text-white flex items-center justify-center font-bold text-[8px]">X</span>
+                <span className="text-[10.5px] text-cyan-100 font-medium">Telemetry</span>
+              </div>
+            </div>
           </div>
 
-          {/* Floating Document Cards Cluster (Right side of left hero) */}
+          {/* Floating Document Cards Cluster (Desktop & Tablet) */}
           <div className="absolute right-2 sm:right-6 lg:right-10 top-12 sm:top-16 lg:top-20 hidden md:block">
             {/* SVG Connecting Cyber Lines */}
             <svg
@@ -193,52 +208,71 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Feature List (Left-aligned bottom section) */}
-          <div className="mt-16 sm:mt-24 lg:mt-32 space-y-4 sm:space-y-5">
-            {/* Find Faster */}
-            <div className="flex items-center gap-3.5 group cursor-default">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 backdrop-blur-md border border-cyan-400/40 flex items-center justify-center text-cyan-300 shadow-lg shadow-cyan-500/20 group-hover:scale-105 group-hover:border-cyan-300 transition-all">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.3-4.3" />
-                </svg>
+          {/* Feature List (Desktop Vertical / Mobile Horizontal Strip) */}
+          <div className="mt-6 sm:mt-12 lg:mt-32">
+            {/* Mobile Feature Strip */}
+            <div className="grid grid-cols-3 gap-2 lg:hidden mb-2">
+              <div className="glass-panel p-2 rounded-xl text-center">
+                <span className="text-cyan-300 text-xs font-bold block">⚡ Fast</span>
+                <span className="text-[10px] text-cyan-100/80">AI Query</span>
               </div>
-              <span className="text-white text-base sm:text-lg font-medium tracking-wide drop-shadow-sm group-hover:text-cyan-200 transition-colors">
-                Find Faster
-              </span>
+              <div className="glass-panel p-2 rounded-xl text-center">
+                <span className="text-cyan-300 text-xs font-bold block">👥 Team</span>
+                <span className="text-[10px] text-cyan-100/80">Unified</span>
+              </div>
+              <div className="glass-panel p-2 rounded-xl text-center">
+                <span className="text-cyan-300 text-xs font-bold block">🛡️ Secure</span>
+                <span className="text-[10px] text-cyan-100/80">Air-gapped</span>
+              </div>
             </div>
 
-            {/* Work Together */}
-            <div className="flex items-center gap-3.5 group cursor-default">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 backdrop-blur-md border border-cyan-400/40 flex items-center justify-center text-cyan-300 shadow-lg shadow-cyan-500/20 group-hover:scale-105 group-hover:border-cyan-300 transition-all">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                </svg>
+            {/* Desktop Feature List */}
+            <div className="hidden lg:block space-y-4 sm:space-y-5">
+              {/* Find Faster */}
+              <div className="flex items-center gap-3.5 group cursor-default">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 backdrop-blur-md border border-cyan-400/40 flex items-center justify-center text-cyan-300 shadow-lg shadow-cyan-500/20 group-hover:scale-105 group-hover:border-cyan-300 transition-all">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                  </svg>
+                </div>
+                <span className="text-white text-base sm:text-lg font-medium tracking-wide drop-shadow-sm group-hover:text-cyan-200 transition-colors">
+                  Find Faster
+                </span>
               </div>
-              <span className="text-white text-base sm:text-lg font-medium tracking-wide drop-shadow-sm group-hover:text-cyan-200 transition-colors">
-                Work Together
-              </span>
-            </div>
 
-            {/* Access Securely */}
-            <div className="flex items-center gap-3.5 group cursor-default">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 backdrop-blur-md border border-cyan-400/40 flex items-center justify-center text-cyan-300 shadow-lg shadow-cyan-500/20 group-hover:scale-105 group-hover:border-cyan-300 transition-all">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
+              {/* Work Together */}
+              <div className="flex items-center gap-3.5 group cursor-default">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 backdrop-blur-md border border-cyan-400/40 flex items-center justify-center text-cyan-300 shadow-lg shadow-cyan-500/20 group-hover:scale-105 group-hover:border-cyan-300 transition-all">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <span className="text-white text-base sm:text-lg font-medium tracking-wide drop-shadow-sm group-hover:text-cyan-200 transition-colors">
+                  Work Together
+                </span>
               </div>
-              <span className="text-white text-base sm:text-lg font-medium tracking-wide drop-shadow-sm group-hover:text-cyan-200 transition-colors">
-                Access Securely
-              </span>
+
+              {/* Access Securely */}
+              <div className="flex items-center gap-3.5 group cursor-default">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 backdrop-blur-md border border-cyan-400/40 flex items-center justify-center text-cyan-300 shadow-lg shadow-cyan-500/20 group-hover:scale-105 group-hover:border-cyan-300 transition-all">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                </div>
+                <span className="text-white text-base sm:text-lg font-medium tracking-wide drop-shadow-sm group-hover:text-cyan-200 transition-colors">
+                  Access Securely
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Footer note for mobile */}
-          <div className="pt-6 sm:pt-8 text-xs text-cyan-200/60 font-mono">
+          <div className="pt-2 sm:pt-6 text-[10px] sm:text-xs text-cyan-200/60 font-mono">
             Smart Hydro & Infrastructure Digital Twin v4.2
           </div>
         </div>
@@ -247,17 +281,19 @@ export default function LoginPage() {
       {/* Floating View Switcher */}
       <Link
         href="/dashboard"
-        className="fixed top-4 right-4 z-50 bg-white/90 hover:bg-white text-slate-800 text-xs font-semibold px-3.5 py-2 rounded-full shadow-lg border border-slate-200/80 backdrop-blur-md flex items-center gap-2 hover:shadow-xl hover:text-blue-600 transition-all cursor-pointer"
-        title="Quick jump to Main Application Dashboard"
+        className="fixed top-3 right-3 sm:top-4 sm:right-4 z-50 bg-white/95 hover:bg-white text-slate-800 text-[11px] sm:text-xs font-semibold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full shadow-md hover:shadow-lg border border-slate-200/90 backdrop-blur-md flex items-center gap-1.5 sm:gap-2 hover:text-blue-600 transition-all cursor-pointer"
+        title="Quick jump to Main Application Panel"
       >
-        <span>Open Dashboard UI</span>
+        <span>Open Panel UI</span>
         <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M5 12h14m-7-7 7 7-7 7" />
         </svg>
       </Link>
 
       {/* ================= RIGHT SECTION (Login Card / Form) ================= */}
-      <div className="w-full lg:w-[42%] min-h-screen bg-white flex flex-col justify-center px-6 sm:px-10 lg:px-14 xl:px-16 py-10 shadow-2xl">
+      <div className="w-full lg:w-[42%] min-h-screen bg-white flex flex-col justify-center px-5 sm:px-10 lg:px-14 xl:px-16 py-8 sm:py-10 shadow-2xl rounded-t-3xl sm:rounded-t-none lg:rounded-none -mt-6 sm:-mt-8 lg:mt-0 relative z-20">
+        {/* Mobile Grab Handle */}
+        <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-4 lg:hidden" />
         <div className="max-w-[430px] w-full mx-auto">
           {/* Brand Header using standalone DsmartLogo component */}
           <DsmartLogo variant="full" theme="light" />
@@ -461,42 +497,23 @@ export default function LoginPage() {
               </p>
             </div>
 
-            {/* 4 Role Cards Grid */}
+            {/* 4 Role Cards Grid (Informational Only) */}
             <div className="grid grid-cols-4 gap-2 mt-3">
-              {roles.map((role) => {
-                const isSelected = selectedRole === role.id;
-                return (
-                  <button
-                    key={role.id}
-                    type="button"
-                    onClick={() => handleRoleSelect(role)}
-                    title={role.desc}
-                    className={`flex flex-col items-center justify-center py-2.5 px-1.5 rounded-xl transition-all duration-200 cursor-pointer ${
-                      isSelected
-                        ? "bg-white border-2 border-blue-600 shadow-md shadow-blue-500/15 text-blue-600"
-                        : "bg-white border border-slate-200/80 hover:border-slate-300 text-slate-600 hover:text-blue-600 hover:shadow-xs"
-                    }`}
-                  >
-                    <div className={isSelected ? "text-blue-600" : "text-blue-600/90"}>
-                      {role.icon}
-                    </div>
-                    <span className="text-[11px] font-semibold mt-1">
-                      {role.label}
-                    </span>
-                  </button>
-                );
-              })}
+              {roles.map((role) => (
+                <div
+                  key={role.id}
+                  title={role.desc}
+                  className="flex flex-col items-center justify-center py-2.5 px-1.5 rounded-xl bg-white border border-slate-200/80 text-slate-700 shadow-2xs select-none cursor-default"
+                >
+                  <div className="text-blue-600">
+                    {role.icon}
+                  </div>
+                  <span className="text-[11px] font-semibold text-slate-700 mt-1">
+                    {role.label}
+                  </span>
+                </div>
+              ))}
             </div>
-
-            {/* Role indicator feedback */}
-            {selectedRole && (
-              <div className="mt-2.5 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[11px]">
-                <span className="text-slate-500">
-                  Active Preset: <span className="font-semibold text-blue-600 capitalize">{selectedRole}</span>
-                </span>
-                <span className="text-emerald-600 font-medium">Credentials loaded</span>
-              </div>
-            )}
           </div>
         </div>
       </div>
