@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" width="280" height="80">
+  <defs>
+    <linearGradient id="d_grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0065ff"/>
+      <stop offset="100%" stop-color="#00b8d9"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0052cc" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Logo Mark Icon -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="0" width="60" height="60" rx="14" fill="#0047b3" filter="url(#shadow)"/>
+    <path d="M16 14 H32 C41 14 46 19 46 27 C46 35 41 40 32 40 H16 Z" fill="url(#d_grad)"/>
+    <rect x="22" y="20" width="6" height="14" rx="2" fill="#ffffff"/>
+    <circle cx="36" cy="27" r="3.5" fill="#38bdf8"/>
+  </g>
+
+  <!-- Wordmark Text -->
+  <text x="85" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="900" fill="#0f2744" letter-spacing="-0.5">D-SMART</text>
+  <text x="85" y="55" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#64748b">Document Intelligence</text>
+  <text x="85" y="68" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#94a3b8">for Smarter Infrastructure</text>
+</svg>
